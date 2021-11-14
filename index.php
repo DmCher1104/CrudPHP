@@ -1,68 +1,100 @@
 <?php
-require_once 'config/connect.php';
+require_once("config/connect.php");
 ?>
 
 <!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="device-width, initial-scale=1">
     <title>Products</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link href="css/style.css" rel="stylesheet">
 </head>
 <body>
-<style>
-    th, td {
-        padding: 10px;
-    }
-
-    th {
-        background: #606060;
-        color: white;
-    }
-
-    td {
-        background: #b5b5b5;
-    }
-</style>
-<table>
-    <tr>
-        <th>ID</th>
-        <th>Title</th>
-        <th>Description</th>
-        <th>Price</th>
-    </tr>
-
-    <?php
-    $products = mysqli_query($connect, "SELECT * FROM `products`");
-    $products = mysqli_fetch_all($products);
-    foreach ($products as $product) {
-        ?>
-
+<div class="container p-0 mx-auto m-4 ">
+    <h3> Table of products</h3>
+    <table class="table table-stripped table-hover">
+        <thead class="thead-light w-100">
         <tr>
-            <td><?= $product[0] ?></td>
-            <td><?= $product[1] ?></td>
-            <td><?= $product[3] ?></td>
-            <td><?= $product[2] ?></td>
-            <td><a style="color: blue" href="update.php?id=<?= $product[0] ?>">Update</a> </td>
-            <td><a style="color: red" href="vendor/delete.php?id=<?= $product[0] ?>">Delete</a> </td>
+            <th scope="col">ID</th>
+            <th scope="col">Title</th>
+            <th scope="col">Description</th>
+            <th scope="col">Price</th>
         </tr>
+        </thead>
+        <tbody>
 
         <?php
-    }
-    ?>
+        try {
+            $sql = "SELECT * FROM products";
+            $products = $connect->query($sql);
+            while ($row = $products->fetch()) {
+                ?>
 
-</table>
-<h3> Add new product</h3>
-<form action="vendor/create.php" method="post">
-    <p>Title</p>
-    <input type="text" name="title">
-    <p>Description</p>
-    <textarea name="description"></textarea>
-    <p>Price</p>
-    <input type="number" name="price">
-    <br>
-    <br>
-    <button type="submit">Add new product</button>
-</form>
+                <tr>
+                    <th scope="row"><?= $row["id"] ?></th>
+                    <td><?= $row["title"] ?></td>
+                    <td><?= $row["description"] ?></td>
+                    <td><?= $row["price"] ?></td>
+                    <td>
+                        <form action="updatePage.php" method="post">
+                            <div class="form-group">
+                                <input type="hidden" name="id" id="id" value="<?= $row["id"] ?>">
+                                <button type="submit" class="btn btn-info mb-2">Update</button>
+                            </div>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="vendor/delete.php" method="post">
+                            <div class="form-group">
+                                <input type="hidden" name="id" id="id" value="<?= $row["id"] ?>">
+                                <button type="submit" class="btn btn-danger mb-2">Delete</button>
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+
+                <?php
+            }
+        } catch (PDOException $e) {
+            echo "Database error: " . $e->getMessage();
+        }
+        ?>
+        </tbody>
+    </table>
+</div>
+
+<div class="container mx-auto bg-info py-2">
+    <h3> Add new product</h3>
+    <form action="vendor/create.php" method="post">
+        <div class="form-group">
+            <label for="exampleFormControlInput1">Title</label>
+            <input type="text" name="title" class="form-control" id="exampleFormControlInput1" placeholder="title">
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlInput1">Description</label>
+            <textarea class="form-control" name="description" id="exampleFormControlInput1" placeholder="description"
+                      rows="3"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlInput1">Price</label>
+            <input type="number" name="price" class="form-control" id="exampleFormControlInput1" placeholder="price">
+        </div>
+        <button type="submit" class="btn btn-primary mb-2">Add new product</button>
+    </form>
+</div>
+
 
 </body>
 </html>
