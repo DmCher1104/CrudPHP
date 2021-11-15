@@ -22,19 +22,13 @@ require_once("config/connect.php");
 <body>
 <?php
 $product_id = $_POST['id'];
-//-----------
-echo $product_id;
-echo "<br>";
-var_dump($product_id);
-echo "<br>";
-//------------
+
 $sql = "SELECT * FROM `products` WHERE `id`=:product_id";
 
 $stmt = $connect->prepare($sql);
 $stmt->bindValue(":product_id", $product_id);
 
 $stmt->execute();
-
 if ($stmt->rowCount() > 0) {
     foreach ($stmt as $row) {
         $title = $row["title"];

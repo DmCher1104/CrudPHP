@@ -24,16 +24,19 @@ require_once("config/connect.php");
 <body>
 <div class="container p-0 mx-auto m-4 ">
     <h3> Table of products</h3>
-    <table class="table table-stripped table-hover">
-        <thead class="thead-light w-100">
+    <table class="table table-bordered table-stripped table-hover text-center">
+        <thead class="thead-dark ">
         <tr>
-            <th scope="col">ID</th>
+            <th scope="col">#</th>
             <th scope="col">Title</th>
             <th scope="col">Description</th>
             <th scope="col">Price</th>
+            <th scope="col">Picture</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
         </tr>
         </thead>
-        <tbody>
+        <tbody class="font-weight-bold">
 
         <?php
         try {
@@ -47,19 +50,33 @@ require_once("config/connect.php");
                     <td><?= $row["title"] ?></td>
                     <td><?= $row["description"] ?></td>
                     <td><?= $row["price"] ?></td>
-                    <td>
-                        <form action="updatePage.php" method="post">
-                            <div class="form-group">
-                                <input type="hidden" name="id" id="id" value="<?= $row["id"] ?>">
-                                <button type="submit" class="btn btn-info mb-2">Update</button>
+                    <td><img src="img/<?= $row["picture"] ?>" width="220" height="220" alt="I don't know!!!">
+                        <form action="vendor/upload.php" method="post" enctype="multipart/form-data">
+                            <div class="input-group mb-3">
+                                <div class="custom-file">
+                                    <input type="hidden" name="id" value="<?= $row["id"] ?>">
+                                    <input type="file" name="file" class="custom-file-input" id="inputGroupFile02">
+                                    <label class="custom-file-label" for="inputGroupFile02" aria-describedby="inputGroupFileAddon02">Choose file</label>
+                                </div>
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="submit"  name="submit" id="inputGroupFileAddon04">Upload</button>
+                                </div>
                             </div>
                         </form>
                     </td>
-                    <td>
+                    <td class=" m-0 p-0">
+                        <form action="updatePage.php" method="post">
+                            <div class="form-group m-0 p-0 ">
+                                <input type="hidden" name="id" value="<?= $row["id"] ?>">
+                                <button type="submit" class="btn btn-primary mb-2  w-100">Update</button>
+                            </div>
+                        </form>
+                    </td>
+                    <td class=" m-0 p-0">
                         <form action="vendor/delete.php" method="post">
-                            <div class="form-group">
-                                <input type="hidden" name="id" id="id" value="<?= $row["id"] ?>">
-                                <button type="submit" class="btn btn-danger mb-2">Delete</button>
+                            <div class="form-group m-0 p-0  ">
+                                <input type="hidden" name="id" value="<?= $row["id"] ?>">
+                                <button type="submit" class="btn btn-danger mb-2  w-100 ">Delete</button>
                             </div>
                         </form>
                     </td>
@@ -77,7 +94,7 @@ require_once("config/connect.php");
 
 <div class="container mx-auto bg-info py-2">
     <h3> Add new product</h3>
-    <form action="vendor/create.php" method="post">
+    <form action="vendor/create.php" method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label for="exampleFormControlInput1">Title</label>
             <input type="text" name="title" class="form-control" id="exampleFormControlInput1" placeholder="title">
@@ -91,7 +108,13 @@ require_once("config/connect.php");
             <label for="exampleFormControlInput1">Price</label>
             <input type="number" name="price" class="form-control" id="exampleFormControlInput1" placeholder="price">
         </div>
-        <button type="submit" class="btn btn-primary mb-2">Add new product</button>
+        <div class="input-group mb-3">
+            <div class="custom-file">
+                <input type="file" name="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+                <label class="custom-file-label" for="inputGroupFile01">You can add the picture to your product</label>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-success mb-2">Add new product</button>
     </form>
 </div>
 

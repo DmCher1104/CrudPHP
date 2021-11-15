@@ -2,6 +2,7 @@
 require_once("../config/connect.php");
 
 $product_id = $_POST['id'];
+
 if (isset($_POST['id'])) {
     try {
         $product_id = $_POST['id'];

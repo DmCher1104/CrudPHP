@@ -1,0 +1,21 @@
+html {
+    position: relative;
+}
+
+img{
+    height: 200px;
+    width: 100%;
+    filter: brightness(85%);
+    object-fit: cover;
+    margin-bottom: 10px;
+    z-index: 0;
+}
+
+table {
+    overflow-x: hidden;
+    font-size: 17px;
+}
+
+tbody > tr >th{
+    font-size: 21px;
+}
